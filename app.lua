@@ -9,7 +9,19 @@ local function get_module()
     return ngx.var.arg_module
 end
 
-string.split = function(s, p)  --字符串分割
+local function get_appver()
+    return ngx.var.arg_appver
+end
+
+local function get_app()
+    return ngx.var.arg_app
+end
+
+local function get_model()
+    return ngx.var.arg_model
+end
+
+string.split = function(s, p)
     local rt= {}
     string.gsub(s, '[^'..p..']+', function(w) table.insert(rt, w) end )
     return rt
@@ -48,7 +60,7 @@ wait_time = function(k)
     return tonumber(wait_time1)
 end
 
-function RandFetch(list,num,poolSize,pool) -- list: 筛选结果，num: 筛取个数，poolSize: 筛取源大小，pool: 筛取源
+function RandFetch(list, num, poolSize, pool)
     pool = pool or {}
     math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6)))
     for i = 1, num do
@@ -60,12 +72,53 @@ function RandFetch(list,num,poolSize,pool) -- list: 筛选结果，num: 筛取�
     end
 end
 
-local request={}
+method = function(k, v)
+    if v then
+        arg, err = rds:smembers(string.format(k, v))
+        if err ~= nil then
+            ngx.log(ngx.ERR, err)
+            ngx.exit(ngx.HTTP_BAD_REQUEST)
+        end
+    end
+    return arg
+end
+
+isintable = function(value, tbl)
+    if tbl then
+        for _, v in ipairs(tbl) do
+            if v == value then
+                return 1
+            end
+        end
+    end
+    return 0
+end
+
+format_ver = function(appver)
+    if appver then
+        return string.sub(appver, 1, 3)
+    end
+    return 0
+end
+
+local request = {}
 local result = {}
 local module_args = string.split(get_module(), ',')
+local appver_args = get_appver()
+local app_args = get_app()
+local model_args = get_model()
+
 for _, module in ipairs(module_args) do
+    local appver = method(common.WHO_APPVER, module)
+    local model = method(common.WHO_MODEL, module)
+    local app = method(common.WHO_APP, module)
+    local message = 0
+    
+    if switch(module) == 1 and isintable(format_ver(appver_args), appver) == 1 and isintable(app_args, app) == 1 and  isintable(model_args, model) == 1 then
+        message = 1
+    end
     RandFetch(request, #request_addr(module), #request_addr(module), request_addr(module))
-    result[module] = {on=switch(module), conf={request_addr=request, wait_time=wait_time(module)}}
+    result[module] = {on=message, conf={request_addr=request, wait_time=wait_time(module)}}
     request={}
 end
 
