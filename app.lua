@@ -117,9 +117,13 @@ for _, module in ipairs(module_args) do
     if switch(module) == 1 and isintable(format_ver(appver_args), appver) == 1 and isintable(app_args, app) == 1 and  isintable(model_args, model) == 1 then
         message = 1
     end
-    RandFetch(request, #request_addr(module), #request_addr(module), request_addr(module))
-    result[module] = {on=message, conf={request_addr=request, wait_time=wait_time(module)}}
-    request={}
+    if request_addr(module) ~= nil then
+        RandFetch(request, #request_addr(module), #request_addr(module), request_addr(module))
+        result[module] = {on=message, conf={request_addr=request, wait_time=wait_time(module)}}
+        request={}
+    else
+        result[module] = {on=message}
+    end
 end
 
 ngx.say(cjson.encode(result))
