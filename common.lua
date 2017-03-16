@@ -6,6 +6,7 @@ _M.WHO_SWITCH = '%s:switch'
 _M.WHO_APPVER = '%s:appver'
 _M.WHO_MODEL = '%s:model'
 _M.WHO_APP = '%s:app'
+_M.WHO_LEVEL = '%s:level'
 _M.BASE_MODULE = 'base_module'
 
 return _M

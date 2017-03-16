@@ -13,18 +13,32 @@ http://bconf.api.mgtv.com/v1/conf
 ```
 method: GET
 
-request:
+* Request:
 ```
 http://bconf.api.mgtv.com/v1/conf?module=p2p,httpdns&sysver=6.0.1&appver=v5.1.2&app=1&guid=3242ejijlkl&model=xiaomi3s
 ```
 
-return:
+Return:
 ```
 {
+    httpdns: {
+        on: 0,
+        conf: {
+        request_addr: [
+            "192.168.0.6",
+            "192.168.0.10",
+            "192.168.0.4",
+            "192.168.0.3",
+            "192.168.0.2",
+            "192.168.0.7",
+            "192.168.0.8",
+            "192.168.0.9",
+            "192.168.0.5"
+            ],
+        wait_time: 1000
+        }
+    }
     "p2p" : {
-        "on" : 0
-    },
-    "httpdns" : {
         "on" : 0
     },
     "其它模块" : {
@@ -32,3 +46,33 @@ return:
     }
 }
 ```
+* Request：
+```
+http://127.0.0.1:9527/v1/module/
+```
+Return:
+```
+{
+    base_module: [
+        "p2p",
+        "httpdns"
+    ]
+}
+```
+
+* Request: 
+```
+http://127.0.0.1:9527/v1/level/
+```
+Return:
+```
+{
+    p2p: {
+        level: 4
+    },
+    httpdns: {
+        level: 4
+    }
+}
+```
+
