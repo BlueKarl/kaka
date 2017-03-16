@@ -75,4 +75,9 @@ Return:
     }
 }
 ```
+## Level级别判定
+* level=1: Master switch == 1  then  on = 1 else on = 0
+* level=2: Master switch && appver in list-appver == 1 then on = 1 else on = 0
+* level=3: Master switch && appver in list-appver && app in list-app == 1 then on = 1 else on = 0
+* level=4: Master switch && appver in list-appver && app in list-app && model in list-model == 1 then on = 1 else on = 0
 
