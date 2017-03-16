@@ -101,6 +101,17 @@ format_ver = function(appver)
     return 0
 end
 
+get_level = function(k)
+    if k then
+        lv, err = rds:get(string.format(common.WHO_LEVEL, k))
+        if err ~= nil then
+            ngx.log(ngx.ERR, err)
+            ngx.exit(ngx.HTTP_BAD_REQUEST)
+        end
+    end
+    return lv
+end
+
 local request = {}
 local result = {}
 local module_args = string.split(get_module(), ',')
@@ -112,11 +123,22 @@ for _, module in ipairs(module_args) do
     local appver = method(common.WHO_APPVER, module)
     local model = method(common.WHO_MODEL, module)
     local app = method(common.WHO_APP, module)
-    local message = 0
+    local level = get_level(module)
+    local message = 1
+    local condition = {
+        switch(module),
+        isintable(format_ver(appver_args), appver),
+        isintable(app_args, app),
+        isintable(model_args, model)
+    }
     
-    if switch(module) == 1 and isintable(format_ver(appver_args), appver) == 1 and isintable(app_args, app) == 1 and  isintable(model_args, model) == 1 then
-        message = 1
+    for i = 1, level do
+        ngx.say(condition[i])
+        if condition[i] == 0 then
+            message = 0
+        end
     end
+
     if request_addr(module) ~= nil then
         RandFetch(request, #request_addr(module), #request_addr(module), request_addr(module))
         result[module] = {on=message, conf={request_addr=request, wait_time=wait_time(module)}}
