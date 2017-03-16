@@ -15,7 +15,7 @@ method: GET
 
 * Request:
 ```
-http://bconf.api.mgtv.com/v1/conf?module=p2p,httpdns&sysver=6.0.1&appver=v5.1.2&app=1&guid=3242ejijlkl&model=xiaomi3s
+http://bconf.api.mgtv.com/v1/conf?module=p2p,httpdns&sysver=6.0.1&appver=5.0.1.200.2.MG.0.0_Beta&app=1&guid=3242ejijlkl&model=xiaomi3s
 ```
 
 Return:

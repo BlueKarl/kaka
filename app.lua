@@ -131,12 +131,14 @@ for _, module in ipairs(module_args) do
         isintable(app_args, app),
         isintable(model_args, model)
     }
-    
-    for i = 1, level do
-        ngx.say(condition[i])
-        if condition[i] == 0 then
-            message = 0
+    if level ~= nil then 
+        for i = 1, level do
+            if condition[i] == 0 then
+                message = 0
+            end
         end
+    else
+        message = 0
     end
 
     if request_addr(module) ~= nil then
