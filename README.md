@@ -9,13 +9,13 @@ Usage
 =====
 
 ```
-http://bconf.api.mgtv.com/v1/conf
+URL/v1/conf
 ```
 method: GET
 
 * Request:
 ```
-http://bconf.api.mgtv.com/v1/conf?module=p2p,httpdns&sysver=6.0.1&appver=5.0.1.200.2.MG.0.0_Beta&app=1&guid=3242ejijlkl&model=xiaomi3s
+http://127.0.0.1:9527/v1/conf?module=p2p,httpdns&sysver=xxx&appver=xxx&app=1&guid=xxx&model=xiaomi3s
 ```
 
 Return:
